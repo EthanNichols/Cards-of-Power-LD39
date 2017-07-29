@@ -35,6 +35,8 @@ public class CreateCityGrid : MonoBehaviour {
                 newTile.transform.SetParent(transform);
                 float scale = newTile.GetComponent<RectTransform>().localScale.x;
                 newTile.transform.localPosition = new Vector2(((gridSize / 2f - .5f) - x), ((gridSize / 2f - .5f) - y)) * (tileSize * scale);
+
+                newTile.name = x + ", " + y;
             }
         }
     }

@@ -44,6 +44,8 @@ public class DisplayCard : MonoBehaviour
                 button = KeyCode.Alpha6;
                 break;
         }
+
+        gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -51,10 +53,10 @@ public class DisplayCard : MonoBehaviour
     {
         if (Input.GetKey(button))
         {
-            display = true;
+            Display();
         } else if (Input.GetKeyUp(button))
         {
-            display = false;
+            Undisplay();
         }
 
         MoveCard();
@@ -79,6 +81,10 @@ public class DisplayCard : MonoBehaviour
             Input.GetMouseButtonDown(0)) &&
             display)
         {
+            transform.localPosition = new Vector3(transform.localPosition.x, -600, 0);
+            transform.SetSiblingIndex(siblingPosition);
+            Undisplay();
+            transform.parent.GetComponent<UsingCard>().PlaceInUsedPile(gameObject);
             gameObject.SetActive(false);
         }
     }

@@ -16,6 +16,7 @@ public class TurnInfo : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		currentTime = maxTurnTime;
+        currentRound = 1;
 
         timeDisplay = transform.FindChild("Turn Timer").FindChild("Text").GetComponent<Text>();
         roundDisplay = transform.FindChild("Turn Number").FindChild("Text").GetComponent<Text>();
@@ -32,6 +33,8 @@ public class TurnInfo : MonoBehaviour {
         {
             currentTime = maxTurnTime;
             currentRound++;
+
+            transform.parent.GetComponent<NextRound>().Begin();
         }
 	}
 }
