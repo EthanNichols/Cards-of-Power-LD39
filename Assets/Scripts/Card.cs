@@ -11,6 +11,7 @@ public class Card {
     public string Description { get; set; }
     public int PowerAmount { get; set; }
 
+    //What type of card power is being used
     public bool InstantGain { get; set; }
     public bool Steal { get; set; }
     public bool Remove { get; set; }

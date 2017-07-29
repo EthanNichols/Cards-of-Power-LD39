@@ -16,17 +16,15 @@ public class NextRound : MonoBehaviour {
 
     public void Begin()
     {
-        DrawCard();
-    }
-
-    private void DrawCard()
-    {
+        //Find both players
         var player1 = transform.FindChild("Player 1");
         var player2 = transform.FindChild("Player 2");
 
+        //Make both players gain/lose the power for the turn
         player1.GetComponent<PlayerPower>().PowerForTurn();
         player2.GetComponent<PlayerPower>().PowerForTurn();
 
+        //Make both players draw a card
         player1.GetComponent<DeckInfo>().DrawCard();
         player2.GetComponent<DeckInfo>().DrawCard();
     }
