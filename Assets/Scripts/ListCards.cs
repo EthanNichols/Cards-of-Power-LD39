@@ -48,12 +48,26 @@ public class ListCards : MonoBehaviour {
         {
             info.transform.FindChild("Amount").GetComponent<Text>().text = "0 / " + info.GetComponent<AllCardInfo>().card.amount;
 
-            foreach (Card deckCard in deck)
+            if (button.transform.FindChild("Text").GetComponent<Text>().text.Contains("1"))
             {
-                if (deckCard == info.GetComponent<AllCardInfo>().card)
+                foreach (Card deckCard in Decks.player1Deck)
                 {
-                    info.transform.FindChild("Amount").GetComponent<Text>().text = deckCard.amountInDeck + " / " + info.GetComponent<AllCardInfo>().card.amount;
-                    break;
+                    if (deckCard == info.gameObject.GetComponent<AllCardInfo>().card)
+                    {
+                        info.transform.FindChild("Amount").GetComponent<Text>().text = deckCard.amountInDeck1 + " / " + info.gameObject.GetComponent<AllCardInfo>().card.amount;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                foreach (Card deckCard in Decks.player2Deck)
+                {
+                    if (deckCard == info.gameObject.GetComponent<AllCardInfo>().card)
+                    {
+                        info.transform.FindChild("Amount").GetComponent<Text>().text = deckCard.amountInDeck2 + " / " + info.gameObject.GetComponent<AllCardInfo>().card.amount;
+                        break;
+                    }
                 }
             }
         }
@@ -61,7 +75,22 @@ public class ListCards : MonoBehaviour {
 
     public void Add(Card card)
     {
-        if (card.amountInDeck < card.amount)
+        bool addCard = false;
+
+        if (button.transform.FindChild("Text").GetComponent<Text>().text.Contains("1")) {
+            if (card.amountInDeck1 < card.amount)
+            {
+                addCard = true;
+            }
+        }
+        else
+        {
+            if (card.amountInDeck2 < card.amount)
+            {
+                addCard = true;
+            }
+        }
+        if (addCard)
         {
             GameObject.Find("Cards / Decks").GetComponent<Decks>().AddToDeck(card, button.transform.FindChild("Text").GetComponent<Text>().text);
         }
@@ -69,6 +98,6 @@ public class ListCards : MonoBehaviour {
 
     public void remove(Card card)
     {
-        GameObject.Find("Cards / Decks").GetComponent<Decks>().RemoveFromDeack(card, button.transform.FindChild("Text").GetComponent<Text>().text);
+        GameObject.Find("Cards / Decks").GetComponent<Decks>().RemoveFromDeck(card, button.transform.FindChild("Text").GetComponent<Text>().text);
     }
 }

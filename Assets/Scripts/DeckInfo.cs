@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DeckInfo : MonoBehaviour
@@ -17,12 +18,16 @@ public class DeckInfo : MonoBehaviour
         {
             foreach(Card card in Decks.player1Deck)
             {
-                localDeck.Add(card, card.amountInDeck);
+                if (card.amountInDeck1 > 0)
+                {
+                    localDeck.Add(card, card.amountInDeck1);
+                }
             }
 
             while (localDeck.Count > 0)
             {
-                var localCard = Decks.player1Deck[Random.Range(0, Decks.player1Deck.Count)];
+                var localList = localDeck.Keys.ToList();
+                var localCard = localList[Random.Range(0, localList.Count)];
                 deck.Push(localCard);
 
                 localDeck[localCard]--;
@@ -38,12 +43,16 @@ public class DeckInfo : MonoBehaviour
         {
             foreach (Card card in Decks.player2Deck)
             {
-                localDeck.Add(card, card.amountInDeck);
+                if (card.amountInDeck2 > 0)
+                {
+                    localDeck.Add(card, card.amountInDeck2);
+                }
             }
 
             while (localDeck.Count > 0)
             {
-                var localCard = Decks.player2Deck[Random.Range(0, Decks.player2Deck.Count)];
+                var localList = localDeck.Keys.ToList();
+                var localCard = localList[Random.Range(0, localList.Count)];
                 deck.Push(localCard);
 
                 localDeck[localCard]--;
@@ -67,10 +76,9 @@ public class DeckInfo : MonoBehaviour
         //Please three cards into the player's hand from their deck
         for (int i = 0; i < 3; i++)
         {
+
             transform.FindChild("Cards").GetComponent<UsingCard>().DrawnCard(deck.Pop());
         }
-
-        Debug.Log(transform.name);
     }
 
     // Update is called once per frame

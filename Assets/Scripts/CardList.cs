@@ -34,7 +34,8 @@ public class CardList : MonoBehaviour
             randomCards(30);
             foreach (Card card in cards)
             {
-                card.amountInDeck = 0;
+                card.amountInDeck1 = 0;
+                card.amountInDeck2 = 0;
             }
         }
         else
@@ -42,7 +43,8 @@ public class CardList : MonoBehaviour
             foreach (Card card in cards)
             {
                 card.amount = 7;
-                card.amountInDeck = 0;
+                card.amountInDeck1 = 0;
+                card.amountInDeck2 = 0;
             }
         }
     }

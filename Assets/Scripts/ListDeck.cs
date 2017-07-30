@@ -24,25 +24,24 @@ public class ListDeck : MonoBehaviour
     void Update()
     {
 
-        List<Card> deck = null;
+        int amount = 0;
 
         if (button.transform.FindChild("Text").GetComponent<Text>().text.Contains("1"))
         {
-            deck = player1Deck;
+            foreach (Card card in Decks.player1Deck)
+            {
+                amount += card.amountInDeck1;
+            }
         }
         else
         {
-            deck = player2Deck;
+            foreach (Card card in Decks.player2Deck)
+            {
+                amount += card.amountInDeck2;
+            }
         }
 
-        int amount = 0;
-
-        foreach(Card card in deck)
-        {
-            amount += card.amountInDeck;
-        }
-
-        GetComponent<Text>().text = "List of Cards (" + amount + ")";
+        GetComponent<Text>().text = "Cards in Deck (" + amount + ")";
 
         AmountInDeck();
     }
@@ -51,25 +50,30 @@ public class ListDeck : MonoBehaviour
     {
         List<Card> deck = null;
 
-        if (button.transform.FindChild("Text").GetComponent<Text>().text.Contains("1"))
-        {
-            deck = Decks.player1Deck;
-        }
-        else
-        {
-            deck = Decks.player2Deck;
-        }
-
         foreach (Transform info in transform.FindChild("List frame").FindChild("List").FindChild("Grid").transform)
         {
             info.FindChild("Amount").GetComponent<Text>().text = "0 / " + info.gameObject.GetComponent<AllCardInfo>().card.amount;
 
-            foreach (Card deckCard in deck)
+            if (button.transform.FindChild("Text").GetComponent<Text>().text.Contains("1"))
             {
-                if (deckCard == info.gameObject.GetComponent<AllCardInfo>().card)
+                foreach (Card deckCard in Decks.player1Deck)
                 {
-                    info.FindChild("Amount").GetComponent<Text>().text = deckCard.amountInDeck + " / " + info.gameObject.GetComponent<AllCardInfo>().card.amount;
-                    break;
+                    if (deckCard == info.gameObject.GetComponent<AllCardInfo>().card)
+                    {
+                        info.FindChild("Amount").GetComponent<Text>().text = deckCard.amountInDeck1 + " / " + info.gameObject.GetComponent<AllCardInfo>().card.amount;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                foreach (Card deckCard in Decks.player2Deck)
+                {
+                    if (deckCard == info.gameObject.GetComponent<AllCardInfo>().card)
+                    {
+                        info.FindChild("Amount").GetComponent<Text>().text = deckCard.amountInDeck2 + " / " + info.gameObject.GetComponent<AllCardInfo>().card.amount;
+                        break;
+                    }
                 }
             }
         }
@@ -109,11 +113,29 @@ public class ListDeck : MonoBehaviour
 
     public void Add(Card card)
     {
-        GameObject.Find("Cards / Decks").GetComponent<Decks>().AddToDeck(card, button.transform.FindChild("Text").GetComponent<Text>().text);
+
+        bool addCard = false;
+        if (button.transform.FindChild("Text").GetComponent<Text>().text.Contains("1")) {
+            if (card.amountInDeck1 < card.amount)
+            {
+                addCard = true;
+            }
+        }
+        else
+        {
+            if (card.amountInDeck2 < card.amount)
+            {
+                addCard = true;
+            }
+        }
+        if (addCard)
+        {
+            GameObject.Find("Cards / Decks").GetComponent<Decks>().AddToDeck(card, button.transform.FindChild("Text").GetComponent<Text>().text);
+        }
     }
 
     public void remove(Card card)
     {
-        GameObject.Find("Cards / Decks").GetComponent<Decks>().RemoveFromDeack(card, button.transform.FindChild("Text").GetComponent<Text>().text);
+        GameObject.Find("Cards / Decks").GetComponent<Decks>().RemoveFromDeck(card, button.transform.FindChild("Text").GetComponent<Text>().text);
     }
 }

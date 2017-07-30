@@ -37,7 +37,7 @@ public class Decks : MonoBehaviour {
                 {
                     if (card == deckCard)
                     {
-                        deckCard.amountInDeck++;
+                        deckCard.amountInDeck1++;
                         break;
                     }
                 }
@@ -50,7 +50,7 @@ public class Decks : MonoBehaviour {
                 {
                     if (card == deckCard)
                     {
-                        deckCard.amountInDeck = 1;
+                        deckCard.amountInDeck1 = 1;
                         break;
                     }
                 }
@@ -64,7 +64,7 @@ public class Decks : MonoBehaviour {
                 {
                     if (card == deckCard)
                     {
-                        deckCard.amountInDeck++;
+                        deckCard.amountInDeck2++;
                         break;
                     }
                 }
@@ -77,7 +77,7 @@ public class Decks : MonoBehaviour {
                 {
                     if (card == deckCard)
                     {
-                        deckCard.amountInDeck = 1;
+                        deckCard.amountInDeck2 = 1;
                         break;
                     }
                 }
@@ -87,7 +87,7 @@ public class Decks : MonoBehaviour {
         GameObject.Find("Deck Cards").GetComponent<ListDeck>().ChangeList();
     }
 
-    public void RemoveFromDeack(Card card, string player)
+    public void RemoveFromDeck(Card card, string player)
     {
         if (player.Contains("1"))
         {
@@ -95,9 +95,9 @@ public class Decks : MonoBehaviour {
             {
                 if (card == deckCard)
                 {
-                    deckCard.amountInDeck--;
+                    deckCard.amountInDeck1--;
 
-                    if (deckCard.amountInDeck <= 0)
+                    if (deckCard.amountInDeck1 <= 0)
                     {
                         player1Deck.Remove(deckCard);
                     }
@@ -111,9 +111,9 @@ public class Decks : MonoBehaviour {
             {
                 if (card == deckCard)
                 {
-                    deckCard.amountInDeck--;
+                    deckCard.amountInDeck2--;
 
-                    if (deckCard.amountInDeck <= 0)
+                    if (deckCard.amountInDeck2 <= 0)
                     {
                         player2Deck.Remove(deckCard);
                     }

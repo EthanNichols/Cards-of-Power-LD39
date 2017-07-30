@@ -43,8 +43,6 @@ public class CollectNewCards : MonoBehaviour {
 
             pos++;
         }
-
-        Debug.Log("New Cards");
     }
 
     public void DeleteCards()

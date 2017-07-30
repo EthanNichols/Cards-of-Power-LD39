@@ -33,6 +33,14 @@ public class PlayerPower : MonoBehaviour {
         //Update the graphics of the power bar and production of power
         UpdatePowerBar();
         UpdatePerTurnPower();
+
+        if (transform.FindChild("HitMarker").localScale.x > 0)
+        {
+            transform.FindChild("HitMarker").localScale -= new Vector3(Time.deltaTime, Time.deltaTime, Time.deltaTime) * .5f;
+        } if (transform.FindChild("HitMarker").localScale.x <= 0)
+        {
+            transform.FindChild("HitMarker").localScale = Vector3.zero;
+        }
 	}
 
     private void UpdatePowerBar()

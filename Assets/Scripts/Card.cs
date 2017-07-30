@@ -12,7 +12,8 @@ public class Card {
     public string Description { get; set; }
     public int cardPower { get; set; }
     public int amount { get; set; }
-    public int amountInDeck { get; set; }
+    public int amountInDeck1 { get; set; }
+    public int amountInDeck2 { get; set; }
 
     public int Health { get; set; }
     public int Attack { get; set; }
@@ -40,16 +41,33 @@ public class Card {
         {
             case "instant":
                 userPower.currentPower += cardPower;
+
+                user.transform.FindChild("HitMarker").localScale = new Vector3(1, 1, 1);
+                user.transform.FindChild("HitMarker").GetComponent<Image>().color = new Color(.2f, .8f, .2f);
+                user.transform.FindChild("HitMarker").FindChild("Text").GetComponent<Text>().text = "+" + cardPower;
                 break;
             case "steal":
                 userPower.currentPower += cardPower-1;
                 otherPower.currentPower -= cardPower;
+
+                otherPlayer.transform.FindChild("HitMarker").localScale = new Vector3(1, 1, 1);
+                otherPlayer.transform.FindChild("HitMarker").GetComponent<Image>().color = new Color(.8f, .2f, .2f);
+                otherPlayer.transform.FindChild("HitMarker").FindChild("Text").GetComponent<Text>().text = "-" + cardPower;
+
+                user.transform.FindChild("HitMarker").localScale = new Vector3(1, 1, 1);
+                user.transform.FindChild("HitMarker").GetComponent<Image>().color = new Color(.2f, .8f, .2f);
+                user.transform.FindChild("HitMarker").FindChild("Text").GetComponent<Text>().text = "+" + (cardPower - 1);
                 break;
             case "remove":
                 otherPower.currentPower -= cardPower;
+
+                otherPlayer.transform.FindChild("HitMarker").localScale = new Vector3(1, 1, 1);
+                otherPlayer.transform.FindChild("HitMarker").GetComponent<Image>().color = new Color(.8f, .2f, .2f);
+                otherPlayer.transform.FindChild("HitMarker").FindChild("Text").GetComponent<Text>().text = "-" + cardPower;
                 break;
             case "building":
                 bool built = user.transform.FindChild("City").GetComponent<Buildings>().BuildBuilding(this);
+
                 if (built)
                 {
                     userPower.powerPerTurn -= this.EnergyConsumption;
