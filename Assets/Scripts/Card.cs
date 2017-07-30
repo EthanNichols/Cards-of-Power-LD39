@@ -62,6 +62,9 @@ public class Card {
                     user.GetComponent<DeckInfo>().DrawCard();
                 }
                 break;
+            case "buff":
+                user.transform.FindChild("City").GetComponent<Buildings>().BuffBuilding(user, this);
+                break;
         }
     }
 }

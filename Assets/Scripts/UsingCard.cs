@@ -47,6 +47,7 @@ public class UsingCard : MonoBehaviour
         if (createDeck &&
             !transform.parent.gameObject.GetComponent<DeckInfo>())
         {
+            Debug.Log("Allow deck");
             transform.parent.gameObject.AddComponent<DeckInfo>();
         }
     }

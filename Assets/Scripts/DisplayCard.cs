@@ -31,30 +31,23 @@ public class DisplayCard : MonoBehaviour
         //Set which button should be pressed to view the card
         transform.FindChild("Button").GetComponent<Text>().text = (siblingPosition + 1).ToString();
 
-        //TEMPERARY!!!
-        useCard = KeyCode.E;
-
-        //Set which button needs to be pressed for the different cards
-        switch(siblingPosition)
+        if (button.ToString().Contains("Alpha"))
         {
-            case 0:
-                button = KeyCode.Alpha1;
-                break;
-            case 1:
-                button = KeyCode.Alpha2;
-                break;
-            case 2:
-                button = KeyCode.Alpha3;
-                break;
-            case 3:
-                button = KeyCode.Alpha4;
-                break;
-            case 4:
-                button = KeyCode.Alpha5;
-                break;
-            case 5:
-                button = KeyCode.Alpha6;
-                break;
+            var buttonName = button.ToString().Substring(button.ToString().Length - 1);
+            transform.FindChild("Button").GetComponent<Text>().text = buttonName;
+
+        } else if (button.ToString().Contains("Bracket")) {
+            if (button.ToString().Contains("Left"))
+            {
+                transform.FindChild("Button").GetComponent<Text>().text = "{";
+            }
+            else if (button.ToString().Contains("Right"))
+            {
+                transform.FindChild("Button").GetComponent<Text>().text = "}";
+            }
+        } else
+        {
+            transform.FindChild("Button").GetComponent<Text>().text = button.ToString();
         }
 
         //Make the cards invisible at the start of the game

@@ -12,10 +12,36 @@ public class DeckInfo : MonoBehaviour
     void Start()
     {
 
-        //TEMPERARYILY create a deck of random cards
-        for (int i = 0; i < 20; i++)
+        if (transform.name.Contains("1"))
         {
-            deck.Push(CardList.cards[Random.Range(0, CardList.cards.Count)]);
+            var localDeck = Decks.player1Deck;
+
+            while (localDeck.Count > 0)
+            {
+                var localCard = localDeck[Random.Range(0, localDeck.Count)];
+                deck.Push(localCard);
+                localDeck.Remove(localCard);
+            }
+        }
+        else if (transform.name.Contains("2"))
+        {
+            var localDeck = Decks.player2Deck;
+
+            while (localDeck.Count > 0)
+            {
+                var localCard = localDeck[Random.Range(0, localDeck.Count)];
+                deck.Push(localCard);
+                localDeck.Remove(localCard);
+            }
+        }
+
+        if (deck.Count == 0)
+        {
+            //TEMPERARYILY create a deck of random cards
+            for (int i = 0; i < 40; i++)
+            {
+                deck.Push(CardList.cards[Random.Range(0, CardList.cards.Count)]);
+            }
         }
 
         //Please three cards into the player's hand from their deck

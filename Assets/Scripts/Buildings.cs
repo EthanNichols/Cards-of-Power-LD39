@@ -29,6 +29,11 @@ public class Buildings : MonoBehaviour
         {
             if (tile.Value != null)
             {
+                if (tile.Value.Health <= 0)
+                {
+                    tiles[tile.Key] = null;
+                }
+
                 tile.Key.GetComponent<Image>().sprite = tile.Value.Image;
 
                 tile.Key.transform.FindChild("Health").GetComponent<Text>().text = "HP: " + tile.Value.Health + " ";
@@ -88,6 +93,7 @@ public class Buildings : MonoBehaviour
                         else
                         {
                             tile2.Value.Health -= attack;
+                            break;
                         }
                     }
                 }
@@ -123,6 +129,47 @@ public class Buildings : MonoBehaviour
                     tiles[tile.Key] = null;
                     repeat = false;
                     break;
+                }
+            }
+
+            if (noBuildings)
+            {
+                repeat = false;
+            }
+        }
+    }
+
+    public void BuffBuilding(GameObject player, Card card)
+    {
+        bool repeat = true;
+
+        while (repeat)
+        {
+            bool noBuildings = true;
+
+            foreach (KeyValuePair<GameObject, Building> tile in player.transform.FindChild("City").GetComponent<Buildings>().tiles)
+            {
+                if (tile.Value != null)
+                {
+                    noBuildings = false;
+                }
+
+                if (tile.Value != null &&
+                    repeat &&
+                    Random.Range(0, 10) == 1)
+                {
+                    tile.Value.Health += card.Health;
+                    tile.Value.Attack += card.Attack;
+                    tile.Value.Defense += card.Defense;
+
+                    if (card.AbsorbAttack ||
+                        card.AttackBuilding)
+                    {
+                        tile.Value.AbsorbAttack = card.AbsorbAttack;
+                        tile.Value.AttackBuilding = card.AttackBuilding;
+                    }
+
+                    repeat = false;
                 }
             }
 
