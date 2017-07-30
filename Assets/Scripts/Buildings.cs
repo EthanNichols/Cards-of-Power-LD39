@@ -126,6 +126,7 @@ public class Buildings : MonoBehaviour
                     repeat &&
                     Random.Range(0, 10) == 1)
                 {
+                    player.GetComponent<PlayerPower>().powerPerTurn += tiles[tile.Key].EnergyConsumption;
                     tiles[tile.Key] = null;
                     repeat = false;
                     break;
