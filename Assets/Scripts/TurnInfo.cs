@@ -12,7 +12,7 @@ public class TurnInfo : MonoBehaviour {
 
     //The current round of  the game
     //The amount of time left in the round
-    private int currentRound;
+    public int currentRound;
     private float currentTime;
 
     //The text that displays the round timer

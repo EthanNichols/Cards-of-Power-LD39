@@ -10,9 +10,12 @@ public class ListCards : MonoBehaviour {
     public GameObject button;
 
     private List<Card> cards = CardList.cards;
+    private List<GameObject> allInfo = new List<GameObject>();
 
 	// Use this for initialization
 	void Start () {
+
+
 		foreach(Card card in cards)
         {
             var displayInfo = Instantiate(cardInfo, Vector3.zero, Quaternion.identity);
@@ -24,12 +27,44 @@ public class ListCards : MonoBehaviour {
             displayInfo.transform.FindChild("Description").GetComponent<Text>().text = card.Description;
             displayInfo.transform.FindChild("Image").GetComponent<Image>().sprite = card.Image;
             displayInfo.transform.FindChild("Cost").GetComponent<Text>().text = card.Cost.ToString();
+
+            allInfo.Add(displayInfo);
         }
 	}
 
+    void Update()
+    {
+        List<Card> deck = null;
+
+        if (button.transform.FindChild("Text").GetComponent<Text>().text.Contains("1"))
+        {
+            deck = Decks.player1Deck;
+        } else
+        {
+            deck = Decks.player2Deck;
+        }
+
+        foreach(GameObject info in allInfo)
+        {
+            info.transform.FindChild("Amount").GetComponent<Text>().text = "0 / " + info.GetComponent<AllCardInfo>().card.amount;
+
+            foreach (Card deckCard in deck)
+            {
+                if (deckCard == info.GetComponent<AllCardInfo>().card)
+                {
+                    info.transform.FindChild("Amount").GetComponent<Text>().text = deckCard.amountInDeck + " / " + info.GetComponent<AllCardInfo>().card.amount;
+                    break;
+                }
+            }
+        }
+    }
+
     public void Add(Card card)
     {
-        GameObject.Find("Cards / Decks").GetComponent<Decks>().AddToDeck(card, button.transform.FindChild("Text").GetComponent<Text>().text);
+        if (card.amountInDeck < card.amount)
+        {
+            GameObject.Find("Cards / Decks").GetComponent<Decks>().AddToDeck(card, button.transform.FindChild("Text").GetComponent<Text>().text);
+        }
     }
 
     public void remove(Card card)

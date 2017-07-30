@@ -11,6 +11,8 @@ public class Card {
     public Sprite Image { get; set; }
     public string Description { get; set; }
     public int cardPower { get; set; }
+    public int amount { get; set; }
+    public int amountInDeck { get; set; }
 
     public int Health { get; set; }
     public int Attack { get; set; }

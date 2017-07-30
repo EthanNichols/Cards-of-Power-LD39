@@ -36,7 +36,9 @@ public class DisplayCard : MonoBehaviour
             var buttonName = button.ToString().Substring(button.ToString().Length - 1);
             transform.FindChild("Button").GetComponent<Text>().text = buttonName;
 
-        } else if (button.ToString().Contains("Bracket")) {
+        }
+        else if (button.ToString().Contains("Bracket"))
+        {
             if (button.ToString().Contains("Left"))
             {
                 transform.FindChild("Button").GetComponent<Text>().text = "{";
@@ -45,7 +47,8 @@ public class DisplayCard : MonoBehaviour
             {
                 transform.FindChild("Button").GetComponent<Text>().text = "}";
             }
-        } else
+        }
+        else
         {
             transform.FindChild("Button").GetComponent<Text>().text = button.ToString();
         }
@@ -58,12 +61,15 @@ public class DisplayCard : MonoBehaviour
     void Update()
     {
         //Test if the player is viewing a card
-        if (Input.GetKey(button))
+        if (Input.GetKey(button) &&
+            (Decks.Match == "2 player" ||
+            transform.parent.parent.name.Contains("1")))
         {
             Display();
 
-        //Test when the player stops viewing the card
-        } else if (Input.GetKeyUp(button))
+            //Test when the player stops viewing the card
+        }
+        else if (Input.GetKeyUp(button))
         {
             Undisplay();
         }
@@ -89,6 +95,33 @@ public class DisplayCard : MonoBehaviour
 
     private void UseCard()
     {
+        bool computerUseCard = false;
+
+        if (Decks.Match == "computer" &&
+            transform.parent.parent.name.Contains("2"))
+        {
+            var use = Random.Range(0, 1000);
+
+            if (use == 1)
+            {
+                computerUseCard = true;
+            }
+
+            if (computerUseCard)
+            {
+                displayCard.useCard(transform.parent.parent.gameObject, GameObject.Find("Player 1"));
+
+                //Move the card back into the player's hand
+                transform.localPosition = new Vector3(transform.localPosition.x, -600, 0);
+                Undisplay();
+
+                //Create the card in the used card pile
+                //Remove the card from the player's hand
+                transform.parent.GetComponent<UsingCard>().PlaceInUsedPile(gameObject);
+                gameObject.SetActive(false);
+            }
+        }
+
         //Test for the card to be used
         //Make sure the card is also being viewed
         if ((Input.GetKey(useCard) ||
@@ -104,7 +137,7 @@ public class DisplayCard : MonoBehaviour
                 otherNum = 2;
             }
 
-            otherUser = transform.parent.parent.parent.FindChild("Player " + otherNum).gameObject;
+            otherUser = GameObject.Find("Player " + otherNum).gameObject;
 
             displayCard.useCard(user, otherUser);
 
@@ -122,8 +155,14 @@ public class DisplayCard : MonoBehaviour
     public void Display()
     {
         //Move the card to the front of the others
-        transform.SetAsLastSibling();
-        display = true;
+
+        if (transform.parent.parent.name.Contains("1") ||
+            (transform.parent.parent.name.Contains("2") &&
+            Decks.Match == "2 player"))
+        {
+            transform.SetAsLastSibling();
+            display = true;
+        }
     }
 
     public void Undisplay()

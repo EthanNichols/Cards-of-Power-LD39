@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ListDeck : MonoBehaviour {
+public class ListDeck : MonoBehaviour
+{
 
     public GameObject button;
     public GameObject cardInfo;
@@ -12,14 +13,16 @@ public class ListDeck : MonoBehaviour {
     private List<Card> player1Deck;
     private List<Card> player2Deck;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         player1Deck = Decks.player1Deck;
         player2Deck = Decks.player2Deck;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
 
         List<Card> deck = null;
 
@@ -32,12 +35,49 @@ public class ListDeck : MonoBehaviour {
             deck = player2Deck;
         }
 
-        GetComponent<Text>().text = "List of Cards (" + deck.Count + ")";
-	}
+        int amount = 0;
+
+        foreach(Card card in deck)
+        {
+            amount += card.amountInDeck;
+        }
+
+        GetComponent<Text>().text = "List of Cards (" + amount + ")";
+
+        AmountInDeck();
+    }
+
+    private void AmountInDeck()
+    {
+        List<Card> deck = null;
+
+        if (button.transform.FindChild("Text").GetComponent<Text>().text.Contains("1"))
+        {
+            deck = Decks.player1Deck;
+        }
+        else
+        {
+            deck = Decks.player2Deck;
+        }
+
+        foreach (Transform info in transform.FindChild("List frame").FindChild("List").FindChild("Grid").transform)
+        {
+            info.FindChild("Amount").GetComponent<Text>().text = "0 / " + info.gameObject.GetComponent<AllCardInfo>().card.amount;
+
+            foreach (Card deckCard in deck)
+            {
+                if (deckCard == info.gameObject.GetComponent<AllCardInfo>().card)
+                {
+                    info.FindChild("Amount").GetComponent<Text>().text = deckCard.amountInDeck + " / " + info.gameObject.GetComponent<AllCardInfo>().card.amount;
+                    break;
+                }
+            }
+        }
+    }
 
     public void ChangeList()
     {
-        foreach(Transform child in list.transform)
+        foreach (Transform child in list.transform)
         {
             Destroy(child.gameObject);
         }

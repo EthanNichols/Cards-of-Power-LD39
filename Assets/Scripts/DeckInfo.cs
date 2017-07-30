@@ -11,27 +11,47 @@ public class DeckInfo : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        Dictionary<Card, int> localDeck = new Dictionary<Card, int>();
 
         if (transform.name.Contains("1"))
         {
-            var localDeck = Decks.player1Deck;
+            foreach(Card card in Decks.player1Deck)
+            {
+                localDeck.Add(card, card.amountInDeck);
+            }
 
             while (localDeck.Count > 0)
             {
-                var localCard = localDeck[Random.Range(0, localDeck.Count)];
+                var localCard = Decks.player1Deck[Random.Range(0, Decks.player1Deck.Count)];
                 deck.Push(localCard);
-                localDeck.Remove(localCard);
+
+                localDeck[localCard]--;
+
+                if (localDeck[localCard] <= 0)
+                {
+                    localDeck.Remove(localCard);
+                }
             }
         }
-        else if (transform.name.Contains("2"))
+        else if (transform.name.Contains("2") &&
+            Decks.Match != "computer")
         {
-            var localDeck = Decks.player2Deck;
+            foreach (Card card in Decks.player2Deck)
+            {
+                localDeck.Add(card, card.amountInDeck);
+            }
 
             while (localDeck.Count > 0)
             {
-                var localCard = localDeck[Random.Range(0, localDeck.Count)];
+                var localCard = Decks.player2Deck[Random.Range(0, Decks.player2Deck.Count)];
                 deck.Push(localCard);
-                localDeck.Remove(localCard);
+
+                localDeck[localCard]--;
+
+                if (localDeck[localCard] <= 0)
+                {
+                    localDeck.Remove(localCard);
+                }
             }
         }
 
