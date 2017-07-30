@@ -6,10 +6,11 @@ using UnityEngine.UI;
 public class Card {
 
     public string Name { get; set; }
-    public int index { get; set; }
+    public string cardType { get; set; }
     public int Cost { get; set; }
     public Sprite Image { get; set; }
     public string Description { get; set; }
+    public int cardPower { get; set; }
 
     public int Health { get; set; }
     public int Attack { get; set; }
@@ -33,20 +34,33 @@ public class Card {
             userPower.currentPower -= Cost;
         }
 
-        switch(index)
+        switch(cardType)
         {
-            case 0:
-                userPower.currentPower += 15;
+            case "instant":
+                userPower.currentPower += cardPower;
                 break;
-            case 1:
-                userPower.currentPower += 7;
-                otherPower.currentPower -= 8;
+            case "steal":
+                userPower.currentPower += cardPower-1;
+                otherPower.currentPower -= cardPower;
                 break;
-            case 2:
-                otherPower.currentPower -= 10;
+            case "remove":
+                otherPower.currentPower -= cardPower;
                 break;
-            default:
-                user.transform.FindChild("City").GetComponent<Buildings>().BuildBuilding(this);
+            case "building":
+                bool built = user.transform.FindChild("City").GetComponent<Buildings>().BuildBuilding(this);
+                if (built)
+                {
+                    userPower.powerPerTurn -= this.EnergyConsumption;
+                }
+                break;
+            case "destroy":
+                otherPlayer.transform.FindChild("City").GetComponent<Buildings>().DestroyBuilding(otherPlayer);
+                break;
+            case "draw":
+                for (int i = 0; i < cardPower; i++)
+                {
+                    user.GetComponent<DeckInfo>().DrawCard();
+                }
                 break;
         }
     }

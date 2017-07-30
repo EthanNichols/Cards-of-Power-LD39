@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Buildings : MonoBehaviour
 {
-
+    public Sprite grass;
     public Dictionary<GameObject, Building> tiles = new Dictionary<GameObject, Building>();
 
     // Use this for initialization
@@ -36,6 +36,11 @@ public class Buildings : MonoBehaviour
                 var attack = tile.Value.Attack;
                 var defense = tile.Value.Defense;
                 tile.Key.transform.FindChild("Stats").GetComponent<Text>().text = attack + " / " + defense + " ";
+            } else
+            {
+                tile.Key.GetComponent<Image>().sprite = grass;
+                tile.Key.transform.FindChild("Health").GetComponent<Text>().text = "";
+                tile.Key.transform.FindChild("Stats").GetComponent<Text>().text = "";
             }
         }
     }
@@ -74,11 +79,13 @@ public class Buildings : MonoBehaviour
                         var attack = CalcDamage(tile1.Value.Attack, tile2.Value.Defense);
                         dealtDamage = true;
 
-                        if (AttackLeft(tile2.Value.Health, attack)) {
+                        if (AttackLeft(tile2.Value.Health, attack))
+                        {
                             attack = attack - tile2.Value.Health;
                             tile2.Value.Health = 0;
                             defendingPlayer.GetComponent<PlayerPower>().currentPower -= attack;
-                        } else
+                        }
+                        else
                         {
                             tile2.Value.Health -= attack;
                         }
@@ -86,13 +93,42 @@ public class Buildings : MonoBehaviour
                 }
             }
 
-            if (tile1.Value != null)
+            if (tile1.Value != null &&
+                !dealtDamage)
             {
-                attackingPlayer.GetComponent<PlayerPower>().currentPower -= tile1.Value.EnergyConsumption;
-                if (!dealtDamage)
+                defendingPlayer.GetComponent<PlayerPower>().currentPower -= tile1.Value.Attack;
+            }
+        }
+    }
+
+    public void DestroyBuilding(GameObject player)
+    {
+        bool repeat = true;
+
+        while (repeat)
+        {
+            bool noBuildings = true;
+
+            foreach (KeyValuePair<GameObject, Building> tile in player.transform.FindChild("City").GetComponent<Buildings>().tiles)
+            {
+                if (tile.Value != null)
                 {
-                    defendingPlayer.GetComponent<PlayerPower>().currentPower -= tile1.Value.Attack;
+                    noBuildings = false;
                 }
+
+                if (tile.Value != null &&
+                    repeat &&
+                    Random.Range(0, 10) == 1)
+                {
+                    tiles[tile.Key] = null;
+                    repeat = false;
+                    break;
+                }
+            }
+
+            if (noBuildings)
+            {
+                repeat = false;
             }
         }
     }
@@ -121,7 +157,7 @@ public class Buildings : MonoBehaviour
         return false;
     }
 
-    public void BuildBuilding(Card card)
+    public bool BuildBuilding(Card card)
     {
 
         foreach (KeyValuePair<GameObject, Building> tile in tiles)
@@ -129,14 +165,14 @@ public class Buildings : MonoBehaviour
 
             if (tile.Value == null)
             {
-                //tile.GetComponent<Image>().sprite
-
-                Building newBuilding = new Building() { Health = card.Health, Attack = card.Attack, Defense = card.Defense, Image = card.Image, AbsorbAttack = card.AbsorbAttack, AttackBuilding = card.AttackBuilding, EnergyConsumption = card.EnergyConsumption};
+                Building newBuilding = new Building() { Health = card.Health, Attack = card.Attack, Defense = card.Defense, Image = card.Image, AbsorbAttack = card.AbsorbAttack, AttackBuilding = card.AttackBuilding, EnergyConsumption = card.EnergyConsumption };
 
                 tiles[tile.Key] = newBuilding;
 
-                return;
+                return true;
             }
         }
+
+        return false;
     }
 }

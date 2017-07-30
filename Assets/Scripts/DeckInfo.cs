@@ -13,7 +13,7 @@ public class DeckInfo : MonoBehaviour
     {
 
         //TEMPERARYILY create a deck of random cards
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 20; i++)
         {
             deck.Push(CardList.cards[Random.Range(0, CardList.cards.Count)]);
         }
