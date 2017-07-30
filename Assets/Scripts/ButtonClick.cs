@@ -48,6 +48,8 @@ public class ButtonClick : MonoBehaviour {
             CardList.collectCards = true;
         }
 
+        CardList.gameChoice();
+
         startingScreen.SetActive(false);
         mainMenu.SetActive(true);
         lastMenu = startingScreen;
@@ -104,9 +106,13 @@ public class ButtonClick : MonoBehaviour {
 
     public void Return()
     {
-        Debug.Log(lastMenu.name);
         lastMenu.SetActive(true);
         currentMenu.SetActive(false);
+
+        if (currentMenu == winScreen)
+        {
+            winScreen.GetComponent<CollectNewCards>().DeleteCards();
+        }
     }
 
     public void ChangePlayer(GameObject button)

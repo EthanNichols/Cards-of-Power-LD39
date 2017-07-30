@@ -25,7 +25,10 @@ public class CardList : MonoBehaviour
         cards.Add(new Card() { Name = "Target Buildings", cardType = "buff", Cost = 3, cardPower = 2, AttackBuilding = true, Image = null, Description = "Draw 2 cards from your deck" });
 
         DontDestroyOnLoad(gameObject);
+    }
 
+    public static void gameChoice()
+    {
         if (collectCards)
         {
             randomCards(30);
@@ -58,5 +61,21 @@ public class CardList : MonoBehaviour
                 card.amount = 7;
             }
         }
+    }
+
+    public static Card CollectCard()
+    {
+        Card newCard = cards[Random.Range(0, cards.Count)];
+        newCard.amount++;
+
+        foreach (Card card in cards)
+        {
+            if (card.amount >= 7)
+            {
+                card.amount = 7;
+            }
+        }
+
+        return newCard;
     }
 }

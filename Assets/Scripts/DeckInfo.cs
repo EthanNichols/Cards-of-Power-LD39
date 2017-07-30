@@ -69,6 +69,8 @@ public class DeckInfo : MonoBehaviour
         {
             transform.FindChild("Cards").GetComponent<UsingCard>().DrawnCard(deck.Pop());
         }
+
+        Debug.Log(transform.name);
     }
 
     // Update is called once per frame
