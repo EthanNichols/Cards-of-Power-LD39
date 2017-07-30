@@ -6,23 +6,48 @@ using UnityEngine.UI;
 public class Card {
 
     public string Name { get; set; }
+    public int index { get; set; }
     public int Cost { get; set; }
     public Sprite Image { get; set; }
     public string Description { get; set; }
-    public int PowerAmount { get; set; }
 
-    //What type of card power is being used
-    public bool InstantGain { get; set; }
-    public bool Steal { get; set; }
-    public bool Remove { get; set; }
+    public int Health { get; set; }
+    public int Attack { get; set; }
+    public int Defense { get; set; }
+    public bool AttackBuilding { get; set; }
+    public bool AbsorbAttack { get; set; }
 
-    public int UseCard()
+    public Sprite BuildingImage { get; set; }
+    public int EnergyConsumption { get; set; }
+
+    public void useCard(GameObject user, GameObject otherPlayer)
     {
-        if (InstantGain)
+        var userPower = user.GetComponent<PlayerPower>();
+        var otherPower = otherPlayer.GetComponent<PlayerPower>();
+
+        if (userPower.currentPower < Cost)
         {
-            return PowerAmount;
+            return;
+        } else
+        {
+            userPower.currentPower -= Cost;
         }
 
-        return 0;
+        switch(index)
+        {
+            case 0:
+                userPower.currentPower += 15;
+                break;
+            case 1:
+                userPower.currentPower += 7;
+                otherPower.currentPower -= 8;
+                break;
+            case 2:
+                otherPower.currentPower -= 10;
+                break;
+            default:
+                user.transform.FindChild("City").GetComponent<Buildings>().BuildBuilding(this);
+                break;
+        }
     }
 }

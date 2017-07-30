@@ -23,6 +23,8 @@ public class CreateCityGrid : MonoBehaviour {
 
         //Move the city to the center of the player's side of the screen
         transform.localPosition = Vector3.zero;
+
+        GetComponent<Buildings>().GetTiles();
 	}
 	
 	// Update is called once per frame
@@ -47,6 +49,7 @@ public class CreateCityGrid : MonoBehaviour {
 
                 //Calculate the scale of the tile
                 //Calculate the position of the tile in the grid
+                newTile.GetComponent<RectTransform>().localScale = new Vector3(5, 5, 5);
                 float scale = newTile.GetComponent<RectTransform>().localScale.x;
                 newTile.transform.localPosition = new Vector2(((gridSize / 2f - .5f) - x), ((gridSize / 2f - .5f) - y)) * (tileSize * scale);
 

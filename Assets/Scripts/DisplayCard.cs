@@ -11,6 +11,8 @@ public class DisplayCard : MonoBehaviour
     public KeyCode button;
     public KeyCode useCard;
 
+    public Card displayCard;
+
     //The location of the card in the hand
     //Whether the card is being looked at or not
     //The speed for the card movement
@@ -100,6 +102,19 @@ public class DisplayCard : MonoBehaviour
             Input.GetMouseButtonDown(0)) &&
             display)
         {
+            GameObject user = transform.parent.parent.gameObject;
+            GameObject otherUser = null;
+            int otherNum = 1;
+
+            if (user.name.Contains("1"))
+            {
+                otherNum = 2;
+            }
+
+            otherUser = transform.parent.parent.parent.FindChild("Player " + otherNum).gameObject;
+
+            displayCard.useCard(user, otherUser);
+
             //Move the card back into the player's hand
             transform.localPosition = new Vector3(transform.localPosition.x, -600, 0);
             Undisplay();

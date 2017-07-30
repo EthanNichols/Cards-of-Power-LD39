@@ -24,6 +24,9 @@ public class NextRound : MonoBehaviour {
         player1.GetComponent<PlayerPower>().PowerForTurn();
         player2.GetComponent<PlayerPower>().PowerForTurn();
 
+        player1.FindChild("City").GetComponent<Buildings>().BuildingAttack(player1.gameObject);
+        player2.FindChild("City").GetComponent<Buildings>().BuildingAttack(player2.gameObject);
+
         //Make both players draw a card
         player1.GetComponent<DeckInfo>().DrawCard();
         player2.GetComponent<DeckInfo>().DrawCard();

@@ -21,8 +21,10 @@ public class UsingCard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bool createDeck = true;
+
         //Go through each child in the used pile
-        foreach(Transform child in usedPile.transform)
+        foreach (Transform child in usedPile.transform)
         {
             //Calculate the shrinking speed of the card
             //Shrink the card
@@ -35,6 +37,17 @@ public class UsingCard : MonoBehaviour
             {
                 Destroy(child.gameObject);
             }
+
+            if (child.gameObject.activeInHierarchy)
+            {
+                createDeck = false;
+            }
+        }
+
+        if (createDeck &&
+            !transform.parent.gameObject.GetComponent<DeckInfo>())
+        {
+            transform.parent.gameObject.AddComponent<DeckInfo>();
         }
     }
 
@@ -63,6 +76,8 @@ public class UsingCard : MonoBehaviour
             if (!child.gameObject.activeInHierarchy)
             {
                 //child.GetComponent<Image>().sprite;
+
+                child.GetComponent<DisplayCard>().displayCard = card;
 
                 //Set the information about the card in your hand relative to the card that you drew
                 child.FindChild("Name").GetComponent<Text>().text = card.Name;
