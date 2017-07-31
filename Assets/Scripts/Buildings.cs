@@ -54,6 +54,7 @@ public class Buildings : MonoBehaviour
 
                 if (tile.Value.Health <= 0)
                 {
+                    transform.parent.GetComponent<PlayerPower>().powerPerTurn += tiles[tile.Key].EnergyConsumption;
                     tiles[tile.Key] = null;
                 }
 
@@ -253,7 +254,7 @@ public class Buildings : MonoBehaviour
             {
                 Debug.Log(tile.Key);
 
-                Building newBuilding = new Building() { Health = card.Health, Attack = card.Attack, Defense = card.Defense, Image = card.Image, AbsorbAttack = card.AbsorbAttack, AttackBuilding = card.AttackBuilding, EnergyConsumption = card.EnergyConsumption };
+                Building newBuilding = new Building() { Health = card.Health, Attack = card.Attack, Defense = card.Defense, Image = card.BuildingImage, AbsorbAttack = card.AbsorbAttack, AttackBuilding = card.AttackBuilding, EnergyConsumption = card.EnergyConsumption };
 
                 tiles[tile.Key] = newBuilding;
 
